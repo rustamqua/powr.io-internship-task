@@ -7,10 +7,10 @@ const StyledBox = styled.div`
   display: inline-block;
   margin: 20px;
 `;
-export const Box = () => {
+export const Box = props => {
   return (
     <StyledBox>
-      <div></div>
+      <div className="Box">{props.id}</div>
     </StyledBox>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react";
-
+import AppStore from "../Store/AppStore";
 const StyledTooltip = styled.div`
   display: flex;
 `;
@@ -13,8 +13,11 @@ class Tooltip extends React.Component {
       showButtons = (
         <StyledTooltip>
           <div>
-            <button>Box</button>
-            <button>Container</button>
+            <button onClick={() => AppStore.pushBox(this.props.id)}>Box</button>
+            <button onClick={() => AppStore.pushContainer(this.props.id)}>
+              Container
+            </button>
+            {this.props.id}
           </div>
         </StyledTooltip>
       );
