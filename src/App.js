@@ -3,12 +3,10 @@ import { observer } from "mobx-react";
 import AppStore from "./Store/AppStore";
 import Container from "./Components/Container";
 import Box from "./Components/Box";
+import { Button } from "./Components/Button";
+import BuildForm from "./Components/BuildForm";
 @observer
 class App extends React.Component {
-  state = {
-    structure: "",
-    errorData: false
-  };
   render() {
     let store = AppStore.ObjectStructure;
     let data = [];
@@ -17,7 +15,16 @@ class App extends React.Component {
     const buildData = objectWithBoxesAndContainers => {
       for (let i = 0; i < objectWithBoxesAndContainers.length; i++) {
         if (objectWithBoxesAndContainers[i].type === "box") {
-          data.push(<Box id={boxIds++}></Box>);
+          if (objectWithBoxesAndContainers[i].color) {
+            data.push(
+              <Box
+                color={objectWithBoxesAndContainers[i].color}
+                id={boxIds++}
+              ></Box>
+            );
+          } else {
+            data.push(<Box id={boxIds++}></Box>);
+          }
         }
         if (objectWithBoxesAndContainers[i].type === "container") {
           data.push(
@@ -34,7 +41,13 @@ class App extends React.Component {
       let tempdata = [];
       for (let i = 0; i < itemsOfContainer.length; i++) {
         if (itemsOfContainer[i].type === "box") {
-          tempdata.push(<Box id={boxIds++}></Box>);
+          if (itemsOfContainer[i].color) {
+            tempdata.push(
+              <Box color={itemsOfContainer[i].color} id={boxIds++}></Box>
+            );
+          } else {
+            tempdata.push(<Box id={boxIds++}></Box>);
+          }
         }
         if (itemsOfContainer[i].type === "container") {
           tempdata.push(
@@ -47,31 +60,13 @@ class App extends React.Component {
       }
       return tempdata;
     };
-    let showError;
-    if (this.state.errorData) {
-      showError = <div>WrongData</div>;
-    }
+
     return (
-      <div>
-        <Container id={0}>{buildData(store.items)}</Container>
-        <input
-          onChange={e => this.setState({ structure: e.target.value })}
-        ></input>
-        <button
-          onClick={() => {
-            try {
-              AppStore.build(this.state.structure);
-              this.setState({ errorData: false });
-            } catch (e) {
-              this.setState({ errorData: true });
-            }
-          }}
-        >
-          Build
-        </button>
-        {JSON.stringify(AppStore.ObjectStructure)}
-        <div></div>
-        {showError}
+      <div style={{ background: "rgb(230,230,230)" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Container id={0}>{buildData(store.items)}</Container>
+        </div>
+        <BuildForm></BuildForm>
       </div>
     );
   }

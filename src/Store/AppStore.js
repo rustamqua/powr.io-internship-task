@@ -12,7 +12,25 @@ class AppStore {
       { type: "box" },
       {
         type: "container",
-        items: [{ type: "box" }, { type: "box" }]
+        items: [
+          { type: "box", color: "#f78da7" },
+          { type: "box", color: "#9900ef" },
+          { type: "container", items: [{ type: "box" }] }
+        ]
+      },
+      {
+        type: "container",
+        items: [
+          { type: "container", items: [{ type: "box", color: "#7bdcb5" }] },
+          { type: "box", color: "#ff6900" },
+          {
+            type: "container",
+            items: [
+              { type: "box" },
+              { type: "container", items: [{ type: "box", color: "#abb8c3" }] }
+            ]
+          }
+        ]
       }
     ]
   };
@@ -40,27 +58,9 @@ class AppStore {
       findContainer(this.BoxesAndContainers.items, containerId);
     }
   };
-  @action deleteBox = containerId => {
+  @action addColor = (containerId, color) => {
     let count = 0;
     let deleted = 0;
-    /*const findBox = (items, containerId) => {
-      let countInside = -1;
-      for (let i = 0; i < items.length; i++) {
-        countInside++;
-        if (items[i].type === "container") {
-          if (findBox(items[i].items, containerId)) {
-            break;
-          }
-        } else if (count === containerId) {
-          console.log(count);
-          console.log(countInside);
-          items.splice(countInside, 1);
-          return true;
-        } else {
-          count++;
-        }
-      }
-    };*/
     const findBox = (items, containerId) => {
       let countInside = -1;
 
@@ -72,8 +72,50 @@ class AppStore {
             return;
           }
         } else if (count === containerId && deleted === 0) {
-          console.log(count);
-          console.log(countInside);
+          items[i].color = color;
+          return true;
+        } else {
+          count++;
+        }
+      }
+    };
+
+    findBox(this.BoxesAndContainers.items, containerId);
+  };
+  @action deleteContainer = containerId => {
+    let count = 0;
+    let deleted = 0;
+    const findContainer = (items, containerId) => {
+      let innerCount = -1;
+      for (let i = 0; i < items.length; i++) {
+        innerCount++;
+        if (items[i].type === "container") {
+          count++;
+          if (count === containerId) {
+            items.splice(innerCount, 1);
+            return;
+          } else {
+            findContainer(items[i].items, containerId);
+          }
+        }
+      }
+    };
+    findContainer(this.BoxesAndContainers.items, containerId);
+  };
+  @action deleteBox = containerId => {
+    let count = 0;
+    let deleted = 0;
+    const findBox = (items, containerId) => {
+      let countInside = -1;
+
+      for (let i = 0; i < items.length; i++) {
+        countInside++;
+        if (items[i].type === "container") {
+          if (findBox(items[i].items, containerId)) {
+            deleted++;
+            return;
+          }
+        } else if (count === containerId && deleted === 0) {
           items.splice(countInside, 1);
           return true;
         } else {
@@ -82,11 +124,7 @@ class AppStore {
       }
     };
 
-    if (containerId === 0) {
-      this.BoxesAndContainers.items.splice(0, 1);
-    } else {
-      findBox(this.BoxesAndContainers.items, containerId);
-    }
+    findBox(this.BoxesAndContainers.items, containerId);
   };
 
   @action pushBox = containerId => {
