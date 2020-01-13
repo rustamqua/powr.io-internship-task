@@ -17,7 +17,7 @@ class Box extends React.Component {
     let showColor;
     if (this.state.showColorChooser && this.state.showOptions) {
       showColor = (
-        <div style={{ position: "absolute" }}>
+        <div style={{ position: "absolute", zIndex: "10" }}>
           <TwitterPicker
             onChangeComplete={color => {
               this.setState({ color: color.hex });
