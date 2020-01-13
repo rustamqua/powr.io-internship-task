@@ -62,7 +62,7 @@ class App extends React.Component {
     };
 
     return (
-      <div style={{ background: "rgb(230,230,230)" }}>
+      <div>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Container id={0}>{buildData(store.items)}</Container>
         </div>
