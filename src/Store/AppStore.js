@@ -40,6 +40,55 @@ class AppStore {
       findContainer(this.BoxesAndContainers.items, containerId);
     }
   };
+  @action deleteBox = containerId => {
+    let count = 0;
+    let deleted = 0;
+    /*const findBox = (items, containerId) => {
+      let countInside = -1;
+      for (let i = 0; i < items.length; i++) {
+        countInside++;
+        if (items[i].type === "container") {
+          if (findBox(items[i].items, containerId)) {
+            break;
+          }
+        } else if (count === containerId) {
+          console.log(count);
+          console.log(countInside);
+          items.splice(countInside, 1);
+          return true;
+        } else {
+          count++;
+        }
+      }
+    };*/
+    const findBox = (items, containerId) => {
+      let countInside = -1;
+
+      for (let i = 0; i < items.length; i++) {
+        countInside++;
+        if (items[i].type === "container") {
+          if (findBox(items[i].items, containerId)) {
+            deleted++;
+            return;
+          }
+        } else if (count === containerId && deleted === 0) {
+          console.log(count);
+          console.log(countInside);
+          items.splice(countInside, 1);
+          return true;
+        } else {
+          count++;
+        }
+      }
+    };
+
+    if (containerId === 0) {
+      this.BoxesAndContainers.items.splice(0, 1);
+    } else {
+      findBox(this.BoxesAndContainers.items, containerId);
+    }
+  };
+
   @action pushBox = containerId => {
     if (containerId === 0) {
       this.BoxesAndContainers.items.push({ type: "box" });

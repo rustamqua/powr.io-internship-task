@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 import AppStore from "./Store/AppStore";
 import Container from "./Components/Container";
-import { Box } from "./Components/Box";
+import Box from "./Components/Box";
 @observer
 class App extends React.Component {
   state = {
