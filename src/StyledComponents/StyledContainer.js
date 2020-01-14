@@ -5,11 +5,11 @@ const StyledContainer = styled.div`
   box-shadow: 0px 0px 24px -5px rgba(0, 0, 0, 0.96);
   border-radius: 5px;
   display: inline-block;
-
+  overflow: visible;
   background: white;
   margin: 20px;
   .container {
-    display: grid;
+    display: inline-block;
     grid-template-columns: repeat(7, 1fr);
     align-items: center;
     justify-items: center;
